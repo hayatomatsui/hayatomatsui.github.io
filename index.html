@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>まなびラボ | ブラウザですぐ使える学習アプリ集</title>
+<meta name="description" content="英語・理科・社会の入試対策から英検・IELTS、教養まで。インストール不要でブラウザからすぐ使える無料学習アプリ集。">
+<style>
+  :root {
+    --bg: #f6f7fb;
+    --card: #ffffff;
+    --border: #e4e7ee;
+    --text: #1f2430;
+    --muted: #6b7280;
+    --accent: #4f46e5;
+    --accent-soft: #eef0ff;
+    --radius: 14px;
+    --shadow: 0 1px 3px rgba(30, 35, 60, .06), 0 4px 14px rgba(30, 35, 60, .05);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Kaku Gothic ProN", "Noto Sans JP", Meiryo, sans-serif;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 20px 72px; }
+
+  /* ---- Hero ---- */
+  .hero {
+    text-align: center;
+    padding: 52px 16px 34px;
+  }
+  .hero .logo { font-size: 2.5rem; line-height: 1; }
+  .hero h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: .02em;
+    margin: 10px 0 4px;
+  }
+  .hero h1 .en { color: var(--accent); font-size: 1.05rem; font-weight: 700; margin-left: 10px; letter-spacing: .08em; }
+  .hero p { color: var(--muted); font-size: .95rem; max-width: 560px; margin: 0 auto; }
+  .hero .total { margin-top: 10px; font-size: .85rem; color: var(--accent); font-weight: 600; }
+
+  /* ---- Controls ---- */
+  .controls { margin-bottom: 10px; }
+  .search-wrap { margin-bottom: 16px; }
+  #search {
+    width: 100%;
+    max-width: 520px;
+    display: block;
+    margin: 0 auto;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 11px 20px;
+    font-size: .95rem;
+    color: var(--text);
+    outline: none;
+    box-shadow: var(--shadow);
+  }
+  #search:focus { border-color: var(--accent); }
+  .tabs, .chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+  .tabs { margin-bottom: 10px; }
+  .tabs button {
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    border-radius: 999px;
+    padding: 7px 16px;
+    font-size: .88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .tabs button:hover { border-color: var(--accent); color: var(--accent); }
+  .tabs button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .chips { margin-bottom: 26px; }
+  .chips .label { font-size: .8rem; color: var(--muted); align-self: center; }
+  .chips button {
+    border: 1px dashed var(--border);
+    background: transparent;
+    color: var(--muted);
+    border-radius: 999px;
+    padding: 4px 13px;
+    font-size: .8rem;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .chips button:hover { color: var(--accent); border-color: var(--accent); }
+  .chips button.active {
+    background: var(--accent-soft);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* ---- Sections ---- */
+  .section { margin-bottom: 36px; }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-left: 4px;
+    border-left: 5px solid var(--sec-color, var(--accent));
+    padding-left: 12px;
+  }
+  .section-head h2 { font-size: 1.25rem; font-weight: 800; }
+  .section-head .cnt { color: var(--muted); font-size: .85rem; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 16px;
+  }
+  .app {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--app-color, var(--accent));
+    border-radius: var(--radius);
+    padding: 18px 18px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: var(--shadow);
+    transition: transform .15s, box-shadow .15s;
+  }
+  .app:hover { transform: translateY(-3px); box-shadow: 0 6px 22px rgba(30,35,60,.12); }
+  .app .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+  .app .title { font-size: 1.02rem; font-weight: 700; line-height: 1.45; }
+  .app .icon { font-size: 1.3rem; line-height: 1.4; }
+  .badge {
+    display: inline-block;
+    font-size: .72rem;
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 2px 10px;
+    background: var(--app-soft, var(--accent-soft));
+    color: var(--app-color, var(--accent));
+    white-space: nowrap;
+  }
+  .app .desc { font-size: .85rem; color: var(--muted); flex: 1; }
+  .app .actions { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
+  .btn-launch {
+    flex: 1;
+    text-align: center;
+    background: var(--app-color, var(--accent));
+    color: #fff !important;
+    border-radius: 9px;
+    padding: 9px 14px;
+    font-size: .9rem;
+    font-weight: 700;
+    transition: opacity .15s;
+  }
+  .btn-launch:hover { opacity: .85; text-decoration: none; }
+  .gh-link { font-size: .78rem; color: var(--muted); white-space: nowrap; }
+  .gh-link:hover { color: var(--accent); }
+  .app .meta { font-size: .74rem; color: #9aa1ad; }
+
+  /* ---- States ---- */
+  .state { text-align: center; padding: 70px 20px; color: var(--muted); }
+  .state.error { color: #d3383f; }
+  .spinner {
+    width: 30px; height: 30px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    margin: 0 auto 14px;
+    animation: spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  footer {
+    text-align: center;
+    font-size: .8rem;
+    color: var(--muted);
+    padding-bottom: 30px;
+  }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="logo">🔭</div>
+  <h1>まなびラボ<span class="en">Manabi Lab</span></h1>
+  <p>英語・理科・社会の入試対策から英検・IELTS、教養まで。<br>インストール不要、ブラウザですぐ使える無料学習アプリ集。</p>
+  <div class="total" id="total"></div>
+</header>
+
+<div class="container">
+  <div id="loading" class="state">
+    <div class="spinner"></div>
+    アプリ一覧を読み込み中…
+  </div>
+  <div id="error" class="state error hidden"></div>
+
+  <div id="app" class="hidden">
+    <div class="controls">
+      <div class="search-wrap">
+        <input type="search" id="search" placeholder="🔍 アプリを検索（例：英検、イオン、過去分詞）" aria-label="アプリを検索">
+      </div>
+      <nav class="tabs" id="tabs" aria-label="教科"></nav>
+      <div class="chips" id="chips" aria-label="レベル・目的">
+        <span class="label">レベル・目的：</span>
+      </div>
+    </div>
+    <div id="sections"></div>
+    <div id="empty" class="state hidden">条件に合うアプリが見つかりませんでした</div>
+  </div>
+</div>
+
+<footer>
+  まなびラボ — Manabi Lab ·
+  <a href="https://github.com/hayatomatsui" target="_blank" rel="noopener">GitHub</a> ·
+  Powered by GitHub Pages / GitHub API
+</footer>
+
+<script>
+"use strict";
+
+const GITHUB_USER = "hayatomatsui";
+
+/* ============================================================
+   アプリ情報（表示名・カテゴリ・レベル）
+   新しいリポジトリを追加したら、ここに1行足すだけでOK。
+   未登録のリポジトリはキーワードから自動分類されます。
+   cat: 英語 | 理科 | 社会 | 教養・ビジネス | その他
+   grp: hs(高校入試) | univ(大学入試) | cert(英検・IELTS) | edu(教養・検定)
+   ============================================================ */
+const APPS_META = {
+  "i-my-me-mine":             { title: "人称代名詞マスター I-my-me-mine", cat: "英語", level: "中学英語・高校入試", grp: "hs" },
+  "kako-bunshi-master":       { title: "過去分詞マスター（規則・不規則動詞）", cat: "英語", level: "中学英語・高校入試", grp: "hs" },
+  "not-but-trainer":          { title: "not A but B 見分けトレーナー", cat: "英語", level: "高校英語・大学入試", grp: "univ" },
+  "suiryo-master":            { title: "助動詞「推量」マスター", cat: "英語", level: "高校英語・大学入試", grp: "univ" },
+  "eiken2-email-vocab":       { title: "英検2級 Eメール頻出単語", cat: "英語", level: "英検2級", grp: "cert" },
+  "english-speech-trainer":   { title: "瞬間英作文トレーナー（スピーチ30フレーズ）", cat: "英語", level: "英検2級", grp: "cert" },
+  "relation-sprint":          { title: "瞬間英作文・関係スプリント（全66例文）", cat: "英語", level: "英検1級", grp: "cert" },
+  "shunkan-eisakubun-eiken1": { title: "瞬間英作文ドリル（2者間の関係）", cat: "英語", level: "英検1級", grp: "cert" },
+  "IELTS-familly":            { title: "IELTSスピーキング語彙トレーナー", cat: "英語", level: "IELTS", grp: "cert" },
+  "ion-srs":                  { title: "イオン・電離式 反復トレーナー", cat: "理科", level: "中学理科・高校入試", grp: "hs" },
+  "ion-study-app":            { title: "イオン・電離式マスター", cat: "理科", level: "中学理科・高校入試", grp: "hs" },
+  "meiji-furigana":           { title: "明治維新 年表マスター（ふりがな付き）", cat: "社会", level: "中学歴史・高校入試", grp: "hs" },
+  "drucker-kentei":           { title: "ドラッカー検定 対策ドリル", cat: "教養・ビジネス", level: "検定対策", grp: "edu" },
+  "effectuation-assessment":  { title: "エフェクチュエーション自己診断", cat: "教養・ビジネス", level: "自己診断", grp: "edu" },
+  "old-world-new-world":      { title: "テトラッド分析で見る過去と未来", cat: "教養・ビジネス", level: "思考ツール", grp: "edu" }
+};
+
+/* ポータルに載せないリポジトリ */
+const EXCLUDE = ["generative-ai-for-beginners"];
+
+const CATS = {
+  "英語":         { icon: "📘", color: "#2563eb", soft: "#e8f0fe" },
+  "理科":         { icon: "🧪", color: "#059669", soft: "#e3f6ef" },
+  "社会":         { icon: "📜", color: "#d97706", soft: "#fdf1e0" },
+  "教養・ビジネス": { icon: "💼", color: "#7c3aed", soft: "#f1eafe" },
+  "その他":       { icon: "🧰", color: "#64748b", soft: "#eef1f5" }
+};
+const CAT_ORDER = ["英語", "理科", "社会", "教養・ビジネス", "その他"];
+const GRP_ORDER = { hs: 0, univ: 1, cert: 2, edu: 3, other: 4 };
+const CHIP_DEFS = [
+  { id: "all",  label: "すべて" },
+  { id: "hs",   label: "高校入試（中学生）" },
+  { id: "univ", label: "大学入試（高校生）" },
+  { id: "cert", label: "英検・IELTS" },
+  { id: "edu",  label: "教養・検定" }
+];
+
+let apps = [];
+let curCat = "すべて";
+let curGrp = "all";
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) =>
+  ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+function timeAgo(iso) {
+  const d = Math.floor((Date.now() - new Date(iso).getTime()) / 86400000);
+  if (d < 1) return "今日";
+  if (d < 30) return `${d}日前`;
+  if (d < 365) return `${Math.floor(d / 30)}ヶ月前`;
+  return `${Math.floor(d / 365)}年前`;
+}
+
+/* 未登録リポジトリの自動分類 */
+function autoCategorize(r) {
+  const s = `${r.name} ${r.description || ""}`.toLowerCase();
+  if (/(英検|eiken|english|eigo|ielts|toeic|英語|英作文|英単語|grammar|vocab)/.test(s)) return "英語";
+  if (/(理科|rika|ion|イオン|物理|化学|生物|地学|science|butsuri|kagaku|seibutsu)/.test(s)) return "理科";
+  if (/(社会|歴史|地理|公民|history|rekishi|meiji|明治|年表)/.test(s)) return "社会";
+  if (/(検定|kentei|ビジネス|business|診断|assessment)/.test(s)) return "教養・ビジネス";
+  return "その他";
+}
+
+function pagesUrl(r) {
+  if (r.name.toLowerCase() === `${GITHUB_USER}.github.io`) return `https://${GITHUB_USER}.github.io/`;
+  return `https://${GITHUB_USER}.github.io/${r.name}/`;
+}
+
+async function ghFetch(url) {
+  const res = await fetch(url, { headers: { "Accept": "application/vnd.github+json" } });
+  if (!res.ok) {
+    if (res.status === 403 || res.status === 429)
+      throw new Error("GitHub API のアクセス上限に達しました。1時間ほど待ってから再読み込みしてください。");
+    if (res.status === 404)
+      throw new Error(`ユーザー「${GITHUB_USER}」が見つかりませんでした。`);
+    throw new Error(`読み込みエラー (HTTP ${res.status})`);
+  }
+  return res.json();
+}
+
+async function fetchAllRepos() {
+  const repos = [];
+  for (let page = 1; page <= 10; page++) {
+    const batch = await ghFetch(
+      `https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&page=${page}`);
+    repos.push(...batch);
+    if (batch.length < 100) break;
+  }
+  return repos;
+}
+
+function buildApps(repos) {
+  return repos
+    .filter((r) => !r.fork && !EXCLUDE.includes(r.name))
+    .map((r) => {
+      const meta = APPS_META[r.name] || {};
+      const cat = meta.cat || autoCategorize(r);
+      const live = (r.homepage && /^https?:/.test(r.homepage)) ? r.homepage
+                 : (r.has_pages ? pagesUrl(r) : null);
+      return {
+        name: r.name,
+        title: meta.title || r.name,
+        desc: r.description || "",
+        cat: CATS[cat] ? cat : "その他",
+        level: meta.level || "",
+        grp: meta.grp || "other",
+        live,
+        repoUrl: r.html_url,
+        pushed: r.pushed_at || r.updated_at
+      };
+    });
+}
+
+function appCard(a) {
+  const c = CATS[a.cat];
+  return `
+  <article class="app" style="--app-color:${c.color};--app-soft:${c.soft}">
+    <div class="top">
+      <div class="title"><span class="icon">${c.icon}</span> ${esc(a.title)}</div>
+      ${a.level ? `<span class="badge">${esc(a.level)}</span>` : ""}
+    </div>
+    <p class="desc">${esc(a.desc || "ブラウザで使える学習アプリ")}</p>
+    <div class="actions">
+      ${a.live
+        ? `<a class="btn-launch" href="${esc(a.live)}" target="_blank" rel="noopener">▶ アプリを使う</a>`
+        : `<span class="btn-launch" style="background:#c3c8d4;cursor:default">準備中</span>`}
+      <a class="gh-link" href="${esc(a.repoUrl)}" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+    <div class="meta">更新: ${timeAgo(a.pushed)}</div>
+  </article>`;
+}
+
+function applyFilters() {
+  const q = $("search").value.trim().toLowerCase();
+  const list = apps.filter((a) =>
+    (curCat === "すべて" || a.cat === curCat) &&
+    (curGrp === "all" || a.grp === curGrp) &&
+    (!q || a.title.toLowerCase().includes(q) || a.name.toLowerCase().includes(q) ||
+      a.desc.toLowerCase().includes(q) || a.level.toLowerCase().includes(q)));
+
+  const secHtml = CAT_ORDER.map((cat) => {
+    const items = list
+      .filter((a) => a.cat === cat)
+      .sort((x, y) => (GRP_ORDER[x.grp] - GRP_ORDER[y.grp]) || x.title.localeCompare(y.title, "ja"));
+    if (!items.length) return "";
+    const c = CATS[cat];
+    return `
+    <section class="section">
+      <div class="section-head" style="--sec-color:${c.color}">
+        <h2>${c.icon} ${esc(cat)}</h2><span class="cnt">${items.length} アプリ</span>
+      </div>
+      <div class="grid">${items.map(appCard).join("")}</div>
+    </section>`;
+  }).join("");
+
+  $("sections").innerHTML = secHtml;
+  $("empty").classList.toggle("hidden", list.length > 0);
+}
+
+function renderTabs() {
+  const cats = ["すべて", ...CAT_ORDER.filter((c) => apps.some((a) => a.cat === c))];
+  $("tabs").innerHTML = cats.map((c) =>
+    `<button data-cat="${esc(c)}" class="${c === curCat ? "active" : ""}">
+     ${c === "すべて" ? "🏠 すべて" : `${CATS[c].icon} ${esc(c)}`}</button>`).join("");
+  $("tabs").querySelectorAll("button").forEach((b) =>
+    b.addEventListener("click", () => {
+      curCat = b.dataset.cat;
+      renderTabs();
+      applyFilters();
+    }));
+}
+
+function renderChips() {
+  const wrap = $("chips");
+  wrap.querySelectorAll("button").forEach((b) => b.remove());
+  CHIP_DEFS.filter((c) => c.id === "all" || apps.some((a) => a.grp === c.id)).forEach((c) => {
+    const b = document.createElement("button");
+    b.textContent = c.label;
+    b.className = c.id === curGrp ? "active" : "";
+    b.addEventListener("click", () => { curGrp = c.id; renderChips(); applyFilters(); });
+    wrap.appendChild(b);
+  });
+}
+
+async function init() {
+  try {
+    const repos = await fetchAllRepos();
+    apps = buildApps(repos);
+    $("total").textContent = `現在 ${apps.length} 個のアプリを公開中`;
+    renderTabs();
+    renderChips();
+    applyFilters();
+    $("loading").classList.add("hidden");
+    $("app").classList.remove("hidden");
+  } catch (e) {
+    $("loading").classList.add("hidden");
+    const el = $("error");
+    el.textContent = e.message;
+    el.classList.remove("hidden");
+  }
+}
+
+$("search").addEventListener("input", applyFilters);
+init();
+</script>
+</body>
+</html>
