@@ -246,6 +246,7 @@ const APPS_META = {
   "english-speech-trainer":   { title: "瞬間英作文トレーナー（スピーチ30フレーズ）", cat: "英語", level: "英検2級", grp: "cert" },
   "relation-sprint":          { title: "瞬間英作文・関係スプリント（全66例文）", cat: "英語", level: "英検1級", grp: "cert" },
   "shunkan-eisakubun-eiken1": { title: "瞬間英作文ドリル（2者間の関係）", cat: "英語", level: "英検1級", grp: "cert" },
+  "eiken1-speech-notes":      { title: "英検1級 スピーチノート（頻出テーマ）", cat: "英語", level: "英検1級", grp: "cert" },
   "IELTS-familly":            { title: "IELTSスピーキング語彙トレーナー", cat: "英語", level: "IELTS", grp: "cert" },
   "ion-srs":                  { title: "イオン・電離式 反復トレーナー", cat: "理科", level: "中学理科・高校入試", grp: "hs" },
   "ion-study-app":            { title: "イオン・電離式マスター", cat: "理科", level: "中学理科・高校入試", grp: "hs" },
@@ -256,7 +257,12 @@ const APPS_META = {
 };
 
 /* ポータルに載せないリポジトリ */
-const EXCLUDE = ["generative-ai-for-beginners"];
+const EXCLUDE = [
+  "generative-ai-for-beginners",   // フォーク
+  "hayatomatsui.github.io",        // このポータル自身
+  "4th-book-manuscript",           // 書籍原稿（学習アプリではない）
+  "instant-english-composition"    // GitHub Pages 未公開（index.html 追加 or Pages 有効化で掲載可）
+];
 
 const CATS = {
   "英語":         { icon: "📘", color: "#2563eb", soft: "#e8f0fe" },
